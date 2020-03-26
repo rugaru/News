@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: News
+  description: 'News'
+  version: 1.0.0
+externalDocs:
+  description: API Root
+  url: http://newsapi.org/v2/
+servers:
+- url: http://newsapi.org/v2/
+tags:
+- name: quote
+  description: Quotes
+paths:
+  /everything:
+    get:
+      tags:
+      - news
+      summary: Get news
+      operationId: getNews
+      parameters:
+        - name: apiKey
+          in: query
+          description: apiKey
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+components:
+  schemas:
+    News:
+      type: object
+      properties:
+        status:
+          type: string
+        totalResults:
+          type: integer
+        articles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+          
+    Article:
+      type: object
+      properties:
+        author:
+          type: string
+        title:
+          type: string
+        articleDescription:
+          type: string
+        source:
+          $ref: '#/components/schemas/Source'
+        url:
+          type: string
+        urlToImage:
+          type: string
+        content:
+          type: string
+          
+    Source:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          
+    ErrorModel:
+      type: object
+      required:
+      - message
+      - code
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+          minimum: 100
+          maximum: 600
+          
+          
+          
+          
